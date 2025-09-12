@@ -23,10 +23,10 @@ namespace PropertyApp.Infrastructure.API.Controllers
 
         // GET: api/<PropertyController>
         [HttpGet]
-        public ActionResult<List<string>> Get()
+        public ActionResult<List<Property>> Get([FromQuery] string? searchTerm, [FromQuery] double? minPrice, [FromQuery] double? maxPrice)
         {
             var service = CreateService();
-            return Ok(service.List());
+            return Ok(service.List(searchTerm, minPrice, maxPrice));
         }
 
         // GET api/<PropertyController>/5
