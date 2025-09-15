@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyApp.Infrastructure.Data.Contexts;
 
@@ -11,12 +10,10 @@ using PropertyApp.Infrastructure.Data.Contexts;
 
 namespace PropertyApp.Infrastructure.Data.Migrations
 {
-    [DbContext(typeof(PropertyContext))]
-    [Migration("20250912043531_first_migration")]
-    partial class first_migration
+    [DbContext(typeof(MainContext))]
+    partial class MainContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,25 +52,57 @@ namespace PropertyApp.Infrastructure.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Area")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Bathrooms")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Bedrooms")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeInternal")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("County")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GarageSpaces")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("IdOwner")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("LivableArea")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Price")
-                        .IsRequired()
+                    b.Property<string>("Overview")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TotalArea")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ZipCode")
                         .HasColumnType("int");
 
                     b.HasKey("IdProperty");
@@ -83,11 +112,44 @@ namespace PropertyApp.Infrastructure.Data.Migrations
                     b.ToTable("Properties", (string)null);
                 });
 
+            modelBuilder.Entity("PropertyApp.Domain.PropertyImage", b =>
+                {
+                    b.Property<Guid>("IdPropertyImage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Enabled")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("File")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdProperty")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IdPropertyImage");
+
+                    b.HasIndex("IdProperty");
+
+                    b.ToTable("PropertyImages", (string)null);
+                });
+
             modelBuilder.Entity("PropertyApp.Domain.Property", b =>
                 {
                     b.HasOne("PropertyApp.Domain.Owner", null)
                         .WithMany()
                         .HasForeignKey("IdOwner")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PropertyApp.Domain.PropertyImage", b =>
+                {
+                    b.HasOne("PropertyApp.Domain.Property", null)
+                        .WithMany()
+                        .HasForeignKey("IdProperty")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

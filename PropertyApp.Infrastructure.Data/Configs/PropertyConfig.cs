@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PropertyApp.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace PropertyApp.Infrastructure.Data.Configs
 {
@@ -13,12 +14,10 @@ namespace PropertyApp.Infrastructure.Data.Configs
     {
         public void Configure(EntityTypeBuilder<Property> builder)
         {
-            builder.ToTable("Properties");
-            builder.HasKey(p => p.IdProperty);
-            builder.HasOne<Owner>()
-                   .WithMany()
-                   .HasForeignKey(p => p.IdOwner)
-                   .OnDelete(DeleteBehavior.Cascade);
+            builder.ToCollection("Properties");
+            builder.Property(property => property.IdProperty).HasElementName("_id");
+            builder.HasKey("IdProperty");
+
         }
     }
 }

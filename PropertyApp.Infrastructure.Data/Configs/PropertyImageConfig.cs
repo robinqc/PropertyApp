@@ -10,13 +10,13 @@ using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace PropertyApp.Infrastructure.Data.Configs
 {
-    class OwnerConfig : IEntityTypeConfiguration<Owner>
+    class PropertyImageConfig : IEntityTypeConfiguration<PropertyImage>
     {
-        public void Configure(EntityTypeBuilder<Owner> builder)
+        public void Configure(EntityTypeBuilder<PropertyImage> builder)
         {
-            builder.ToCollection("Owners");
-            builder.Property(owner => owner.IdOwner).HasElementName("_id");
-            builder.HasKey("IdOwner");
+            builder.ToCollection("PropertyImages");
+            builder.Property(image => image.IdPropertyImage).HasElementName("_id");
+            builder.HasKey("IdPropertyImage");
         }
     }
 }

@@ -11,9 +11,9 @@ using PropertyApp.Infrastructure.Data.Contexts;
 
 namespace PropertyApp.Infrastructure.Data.Migrations
 {
-    [DbContext(typeof(PropertyContext))]
-    [Migration("20250912051149_UpdatePropertyColumns")]
-    partial class UpdatePropertyColumns
+    [DbContext(typeof(MainContext))]
+    [Migration("20250914215956_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,19 +57,49 @@ namespace PropertyApp.Infrastructure.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Area")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Bathrooms")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Bedrooms")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CodeInternal")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GarageSpaces")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("IdOwner")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("LivableArea")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Overview")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int?>("TotalArea")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ZipCode")
                         .HasColumnType("int");
 
                     b.HasKey("IdProperty");

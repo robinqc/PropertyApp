@@ -8,7 +8,7 @@ namespace PropertyApp.Infrastructure.Data
         static void Main(string[] args)
         {
             Console.WriteLine("Creando la DB si no existe...");
-            PropertyContext db = new PropertyContext();
+            Contexts.MainContext db = new Contexts.MainContext();
             db.Database.EnsureCreated();
             Console.WriteLine(db.Database);
             Console.ReadKey();

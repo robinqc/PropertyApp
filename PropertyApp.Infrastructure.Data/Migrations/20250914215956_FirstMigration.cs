@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PropertyApp.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class first_migration : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,11 +32,21 @@ namespace PropertyApp.Infrastructure.Data.Migrations
                 {
                     IdProperty = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdOwner = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodeInternal = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<double>(type: "float", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CodeInternal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Overview = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Area = table.Column<int>(type: "int", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ZipCode = table.Column<int>(type: "int", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bedrooms = table.Column<int>(type: "int", nullable: true),
+                    Bathrooms = table.Column<int>(type: "int", nullable: true),
+                    GarageSpaces = table.Column<int>(type: "int", nullable: true),
+                    LivableArea = table.Column<int>(type: "int", nullable: true),
+                    TotalArea = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

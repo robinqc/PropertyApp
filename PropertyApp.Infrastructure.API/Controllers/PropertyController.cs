@@ -4,6 +4,7 @@ using PropertyApp.Infrastructure.Data.Contexts;
 using PropertyApp.Infrastructure.Data.Repositories;
 using PropertyApp.Applications.Services;
 using PropertyApp.Domain;
+using MongoDB.Bson;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,9 +16,10 @@ namespace PropertyApp.Infrastructure.API.Controllers
     {
         PropertyService CreateService()
         {
-            PropertyContext db = new PropertyContext();
+            Data.Contexts.MainContext db = new Data.Contexts.MainContext();
             PropertyRepository repo = new PropertyRepository(db);
-            PropertyService service = new PropertyService(repo);
+            PropertyImageRepository propertyImageRepository = new PropertyImageRepository(db);
+            PropertyService service = new PropertyService(repo, propertyImageRepository);
             return service;
         }
 
@@ -29,12 +31,12 @@ namespace PropertyApp.Infrastructure.API.Controllers
             return Ok(service.List(searchTerm, minPrice, maxPrice));
         }
 
-        // GET api/<PropertyController>/5
+        // GET api/<PropertyController>/abc
         [HttpGet("{id}")]
-        public ActionResult<Property> Get(int id)
+        public ActionResult<Property> Get(string id)
         {
             var service = CreateService();
-            return Ok(service.GetById(Guid.Parse(id.ToString())));
+            return Ok(service.GetById(ObjectId.Parse(id.ToString())));
         }
 
         // POST api/<PropertyController>
@@ -48,7 +50,7 @@ namespace PropertyApp.Infrastructure.API.Controllers
 
         // PUT api/<PropertyController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(Guid id, [FromBody] Property property)
+        public ActionResult Put(ObjectId id, [FromBody] Property property)
         {
             var service = CreateService();
             property.IdProperty = id;
@@ -58,7 +60,7 @@ namespace PropertyApp.Infrastructure.API.Controllers
 
         // DELETE api/<PropertyController>/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(Guid id)
+        public ActionResult Delete(ObjectId id)
         {
             var service = CreateService();
             service.Delete(id);

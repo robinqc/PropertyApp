@@ -1,21 +1,26 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using PropertyApp.Applications.Interfaces;
+using PropertyApp.Domain;
+using PropertyApp.Domain.Interfaces;
+using PropertyApp.Domain.Interfaces.Repositories;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PropertyApp.Applications.Interfaces;
-using PropertyApp.Domain.Interfaces;
-using PropertyApp.Domain.Interfaces.Repositories;
-using PropertyApp.Domain;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PropertyApp.Applications.Services
 {
-    public class PropertyService : IBaseService<Property, Guid>
+    public class PropertyService : IBaseService<Property, ObjectId>
     {
-        private readonly IBaseRepository<Property, Guid> propertyRepository;
-        public PropertyService(IBaseRepository<Property, Guid> _propertyRepository)
+        private readonly IBaseRepository<Property, ObjectId> propertyRepository;
+        private readonly IBareRepository<PropertyImage, string> propertyImageRepository;
+        public PropertyService(IBaseRepository<Property, ObjectId> _propertyRepository, IBareRepository<PropertyImage, string> _propertyImageRepository)
         {
             propertyRepository = _propertyRepository;
+            propertyImageRepository = _propertyImageRepository;
         }
 
         public Property Create(Property obj)
@@ -27,9 +32,9 @@ namespace PropertyApp.Applications.Services
             return res;
         }
 
-        public void Delete(Guid id)
+        public void Delete(ObjectId id)
         {
-            if (id == Guid.Empty)
+            if (id == ObjectId.Empty)
                 throw new ArgumentNullException("The id to be deleted cannot be empty");
             propertyRepository.Delete(id);
             propertyRepository.Commit();
@@ -67,14 +72,31 @@ namespace PropertyApp.Applications.Services
                 properties = properties.Where(p => p.Price.HasValue && p.Price.Value <= maxPrice.Value).ToList();
             }
 
+            foreach (var property in properties)
+            {
+
+                var images = propertyImageRepository.List(property.IdProperty.ToString());
+                // print out images result
+                Trace.WriteLine("printing...");
+                foreach (PropertyImage image in images)
+                {
+                    Trace.WriteLine(image.File);
+                }
+                if (images != null && images.Count > 0)
+                {
+                    property.Images = images;
+                }
+            }
+
             return properties;
         }
 
-        public Property GetById(Guid id)
+        public Property GetById(ObjectId id)
         {
-            if (id == Guid.Empty)
+            if (id == ObjectId.Empty)
                 throw new ArgumentNullException("The id to be retrieved cannot be empty");
             return propertyRepository.GetById(id);
+
         }
 
         public void Update(Property obj)
