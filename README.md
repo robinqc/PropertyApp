@@ -26,11 +26,11 @@ dotnet restore
 
 ### 3. Set Up Environment Variables
 
-Copy `.env.example` (if present) as `.env`, or configure your environment variables as required for database connection, secrets, etc.
+Copy `.env.example` as `.env`, or configure your environment variables as required for database connection, secrets, etc.
 
 #### Example
 Typical variables you may need:
-- `ConnectionStrings__MongoDB` – your MongoDB connection string
+- `MONGODB_CONNECTION_STRING` – your MongoDB connection string
 
 ### 4. Restore the MongoDB Database
 
@@ -40,7 +40,7 @@ Make sure MongoDB is installed and running. Then restore the database with:
 mongorestore -d PropertyAppDB ./fixtures/PropertyAppDB/
 ```
 
-This will import the sample data into a database named `PropertyAppDB`.
+This will import the sample data into a collection named `PropertyAppDB`.
 
 ### 5. Run the Server
 
